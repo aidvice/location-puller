@@ -1,18 +1,25 @@
 class Api::GeolocationController < ApplicationController
     def index
-        begin
-        	input = params[:ltdlng]
+		begin
+			if !params[:ltdlng].nil?
+				input = params[:ltdlng]
 
-        	check_input_params
+				check_input_params
 
-        	parse_input = input.split(',')
-        	latitude = parse_input[0]
-        	longitude = parse_input[1]
+				parse_input = input.split(',')
+				latitude = parse_input[0]
+				longitude = parse_input[1]
 
-        	location = get_location(latitude, longitude)
- 			cases = get_cases(location[:estado][-2..-1])
+				location = get_location(latitude, longitude)
+				cases = get_cases(location[:estado][-2..-1])
+				
+				render json: location.merge(cases)
+			elsif !params[:uf].nil?
+				cases = get_cases(params[:uf])
 
-        	render json: location.merge(cases)
+				render json: cases
+			end
+
         rescue AidviceExceptions::BadParameters
         	Rails.logger.info "Error"
         	render json: {message: "Parâmetros incorretos. Espera-se: ltdlng=x,y."}, status: 400
