@@ -9,7 +9,7 @@ class Api::TriageController < ApplicationController
             user_score[:gripe] = calcula_score_gripe(user_input)
             user_score[:covid] = calcula_score_covid(user_input)
         
-            symptoms_highlights = []
+            symptoms_highlights = get_symptoms_highlights(user_input)
         
             max_score = {
                 dengue: 12.6,
@@ -22,7 +22,8 @@ class Api::TriageController < ApplicationController
                 score_covid: (user_score[:covid]/max_score[:covid]).round(4),
                 score_gripe: (user_score[:gripe]/max_score[:gripe]).round(4)
             }
-            render json: user_score_normalizado              
+
+            render json: user_score_normalizado.merge(highlights: symptoms_highlights)
         rescue AidviceExceptions::BadParameters
             render json: {message: "Parâmetros incorretos."}, status: 400
         rescue => e
@@ -72,6 +73,30 @@ class Api::TriageController < ApplicationController
 
         return score.round(1)
     end
+    def get_symptoms_highlights(user_input)
+        symptoms_highlights = []
+        if user_input[:tosse] && user_input[:febre] && user_input[:dificuldade_respirar] && user_input[:cansaco]
+            symptoms_highlights << {
+                doenca: "covid",
+                sintomas_chave: ["tosse seca", "febre", "dificuldade para respirar", "cansaço"]
+            }
+        end
+        if user_input[:febre] && user_input[:febre_subita] && user_input[:dor_olhos] && user_input[:dor_muscular]
+            symptoms_highlights << {
+                doenca: "dengue",
+                sintomas_chave: ["febre súbita", "dor atrás dos olhos", "dor muscular"]
+            }
+        end
+        if user_input[:febre] && user_input[:dor_muscular] && !user_input[:febre_subita] && user_input[:coriza]
+            symptoms_highlights << {
+                doenca: "gripe",
+                sintomas_chave: ["febre", "dor muscular", "coriza"]
+            }
+        end
+
+        return symptoms_highlights
+    end
+    
     
     def check_params
         mandatory_params = get_mandatory_params
