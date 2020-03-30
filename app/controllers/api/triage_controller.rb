@@ -1,4 +1,4 @@
-class Api::TriageController < Api::ApiControler
+class Api::TriageController < Api::ApiController
 	before_action :check_api_token
 
     def index
