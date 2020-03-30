@@ -1,4 +1,6 @@
-class Api::GeolocationController < ApplicationController
+class Api::GeolocationController < Api::ApiController
+	before_action :check_api_token
+
     def index
 		begin
 			if !params[:ltdlng].nil?
@@ -20,8 +22,9 @@ class Api::GeolocationController < ApplicationController
 				render json: cases
 			end
 
+		rescue AidviceExceptions::UnauthorizedOperation
+			render status: 401
         rescue AidviceExceptions::BadParameters
-        	Rails.logger.info "Error"
         	render json: {message: "Parâmetros incorretos. Espera-se: ltdlng=x,y."}, status: 400
         rescue => e
         	Rails.logger.error e.message
@@ -36,8 +39,8 @@ class Api::GeolocationController < ApplicationController
     end
 
     def get_location(latitude, longitude)
-
-    	google_api_key = ENV['GOOGLE_API_KEY']    	
+		google_api_key = ENV['GOOGLE_API_KEY']
+		
     	request_url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latitude + ',' + longitude + '&key=' + google_api_key
     	google_geocoding_parsed_response = JSON.parse(HTTP.get(request_url).to_s)
 

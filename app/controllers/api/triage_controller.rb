@@ -1,4 +1,6 @@
-class Api::TriageController < ApplicationController
+class Api::TriageController < Api::ApiControler
+	before_action :check_api_token
+
     def index
         begin
             check_params
