@@ -113,4 +113,3 @@ class Api::TriageController < ApplicationController
         'falta_apetite', 'dor_ossos', 'nausea_vomito', 'dor_abdomen', 'coriza', 'coceira']
     end
 end
-
