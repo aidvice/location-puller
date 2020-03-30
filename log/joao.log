@@ -72,3 +72,7 @@ puma (3.12.4) lib/puma/server.rb:675:in `handle_request'
 puma (3.12.4) lib/puma/server.rb:476:in `process_client'
 puma (3.12.4) lib/puma/server.rb:334:in `block in run'
 puma (3.12.4) lib/puma/thread_pool.rb:135:in `block in spawn_thread'
+Started GET "/api/geolocation?uf=sp" for 127.0.0.1 at 2020-03-29 21:25:50 -0300
+Processing by Api::GeolocationController#index as */*
+  Parameters: {"febre"=>true, "febre_subita"=>false, "dor_muscular"=>true, "cansaco"=>true, "tosse"=>true, "dificuldade_respirar"=>true, "dor_peito"=>true, "dor_cabeca"=>true, "dor_garganta"=>true, "diarreia"=>false, "dor_olhos"=>false, "manchas_erupcoes"=>true, "falta_apetite"=>true, "dor_ossos"=>true, "nausea_vomito"=>false, "dor_abdomen"=>true, "coriza"=>false, "coceira"=>false, "uf"=>"sp", "geolocation"=>{"febre"=>true, "febre_subita"=>false, "dor_muscular"=>true, "cansaco"=>true, "tosse"=>true, "dificuldade_respirar"=>true, "dor_peito"=>true, "dor_cabeca"=>true, "dor_garganta"=>true, "diarreia"=>false, "dor_olhos"=>false, "manchas_erupcoes"=>true, "falta_apetite"=>true, "dor_ossos"=>true, "nausea_vomito"=>false, "dor_abdomen"=>true, "coriza"=>false, "coceira"=>false}}
+Completed 200 OK in 869ms (Views: 0.4ms | Allocations: 1770)
